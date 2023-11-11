@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Box } from "@mui/material";
-import Dropzone from "@/app/Dropzone";
+import Dropzone from "@/components/Dropzone";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
 const App = () => {
