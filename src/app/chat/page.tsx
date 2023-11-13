@@ -1,6 +1,8 @@
+"use client";
 import React from "react";
 import { Container, Paper, Typography } from "@mui/material";
 import PdfPreview from "../../components/PdfPreview";
+import Chatbot from "@/components/Chatbot";
 
 const SplitScreenLayout: React.FC = () => {
   return (
@@ -11,13 +13,22 @@ const SplitScreenLayout: React.FC = () => {
         <div
           style={{
             flex: 1,
+            display: "flex",
             marginRight: "16px",
           }}
         >
-          <Paper elevation={1} style={{ height: "100%" }}>
-            <Typography variant="h6" style={{ padding: "16px" }}>
-              Chat Screen
-            </Typography>
+          <Paper
+            elevation={1}
+            style={{
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-end",
+              flex: 1,
+              overflow: "auto",
+            }}
+          >
+            <Chatbot></Chatbot>
           </Paper>
         </div>
         {/* Right side */}
