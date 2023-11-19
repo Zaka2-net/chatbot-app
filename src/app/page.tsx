@@ -1,12 +1,24 @@
-import React from "react";
-import { Box, Typography } from "@mui/material";
+"use client";
+import React, { useState } from "react";
+import { Box } from "@mui/material";
+import Dropzone from "@/components/Dropzone";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const App = () => {
-  interface MainText {
-    text: string;
-  }
+  const [files, setFiles] = useState<File[]>([]);
+  const [isProcessingFile, setIsProcessingFile] = useState<Boolean>(false);
 
-  const mainText: MainText = { text: "Hello World" }; // To test typscript funtionality
+  const onSetFiles = (submittedFiles: File[]) => {
+    setIsProcessingFile(true);
+    setFiles(submittedFiles);
+
+    // Set a timeout for 2 seconds to mimic server behavior
+    setTimeout(() => {
+      setIsProcessingFile(false);
+      console.log("File Uploaded Successfully");
+      console.log(submittedFiles);
+    }, 2000);
+  };
 
   return (
     <Box
@@ -15,10 +27,13 @@ const App = () => {
         alignItems: "center",
         justifyContent: "center",
         height: "100vh", // Set to 100% of the viewport height
-        textAlign: "center",
       }}
     >
-      <Typography variant="h2">{mainText.text}</Typography>
+      {isProcessingFile ? (
+        <LoadingSpinner />
+      ) : (
+        <Dropzone onSetFiles={onSetFiles}></Dropzone>
+      )}
     </Box>
   );
 };
