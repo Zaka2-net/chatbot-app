@@ -8,7 +8,6 @@ const LoadingSpinner: React.FC = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        // height: "100vh", //
       }}
     >
       <CircularProgress />
