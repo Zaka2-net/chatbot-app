@@ -50,12 +50,9 @@ const PdfPreview = () => {
   };
 
   return (
-    <div className={styles.Example}>
-      <div className={styles.Example__container}>
-        <div
-          className={styles.Example__container__document}
-          ref={setContainerRef}
-        >
+    <div className={styles.PDF}>
+      <div className={styles.PDF__container}>
+        <div className={styles.PDF__container__document} ref={setContainerRef}>
           <Document
             file={file}
             onLoadSuccess={onDocumentLoadSuccess}
