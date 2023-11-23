@@ -4,7 +4,7 @@ import { useDropzone, FileRejection } from "react-dropzone";
 import { Box, Typography } from "@mui/material";
 
 interface DropzoneProps {
-  onSetFiles: Function;
+  onSetFiles: (files: File[]) => void;
 }
 
 const Dropzone: React.FC<DropzoneProps> = ({ onSetFiles }) => {
