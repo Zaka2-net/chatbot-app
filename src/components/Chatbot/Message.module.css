@@ -1,0 +1,15 @@
+.messageContainer {
+  display: "flex";
+  align-items: "center";
+  flex-direction: row;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+.avatar {
+  margin-right: 24px;
+}
+.textContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
