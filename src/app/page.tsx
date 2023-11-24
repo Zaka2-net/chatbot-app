@@ -1,22 +1,26 @@
 "use client";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Box } from "@mui/material";
 import Dropzone from "@/components/Dropzone";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { usePdfContext } from "../contexts/PdfContext";
 
 const App = () => {
-  const [files, setFiles] = useState<File[]>([]);
+  const router = useRouter();
+
+  const { pdfFiles, setPdfFiles } = usePdfContext();
   const [isProcessingFile, setIsProcessingFile] = useState<Boolean>(false);
 
   const onSetFiles = (submittedFiles: File[]) => {
     setIsProcessingFile(true);
-    setFiles(submittedFiles);
+    setPdfFiles(submittedFiles);
 
     // Set a timeout for 2 seconds to mimic server behavior
     setTimeout(() => {
       setIsProcessingFile(false);
       console.log("File Uploaded Successfully");
-      console.log(submittedFiles);
+      router.push("/chat");
     }, 2000);
   };
 

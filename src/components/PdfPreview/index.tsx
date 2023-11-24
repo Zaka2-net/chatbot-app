@@ -8,6 +8,7 @@ import "react-pdf/dist/esm/Page/TextLayer.css";
 import styles from "./index.module.css"; // Import the CSS module
 import type { PDFDocumentProxy } from "pdfjs-dist";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { usePdfContext } from "../../contexts/PdfContext";
 
 // React PDF Configuration
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
@@ -27,6 +28,9 @@ const maxWidth = 800;
 type PDFFile = string | File | null;
 
 const PdfPreview = () => {
+  const { pdfFiles, setPdfFiles } = usePdfContext();
+  console.log(pdfFiles);
+
   // Local State
   const [file, setFile] = useState<PDFFile>("./sample.pdf"); // Sample file until we pass the data between the routes
   const [numPages, setNumPages] = useState<number>();
