@@ -14,7 +14,7 @@ const App = () => {
   const [isProcessingFile, setIsProcessingFile] = useState<Boolean>(false);
   const { user, error, isLoading } = useUser();
 
-  console.log("user", user)
+  console.log("user", user);
 
   const onSetFiles = useCallback(async (submittedFiles: File[]) => {
     setIsProcessingFile(true);
@@ -60,7 +60,7 @@ const App = () => {
       }}
     >
       <a href="/api/auth/logout">Logout</a>
-      
+
       {isProcessingFile ? (
         <LoadingSpinner />
       ) : (
