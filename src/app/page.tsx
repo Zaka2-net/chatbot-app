@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Box } from "@mui/material";
 import Dropzone from "@/components/Dropzone";
@@ -12,17 +12,35 @@ const App = () => {
   const { pdfFiles, setPdfFiles } = usePdfContext();
   const [isProcessingFile, setIsProcessingFile] = useState<Boolean>(false);
 
-  const onSetFiles = (submittedFiles: File[]) => {
+  const onSetFiles = useCallback(async (submittedFiles: File[]) => {
     setIsProcessingFile(true);
     setPdfFiles(submittedFiles);
 
-    // Set a timeout for 2 seconds to mimic server behavior
-    setTimeout(() => {
-      setIsProcessingFile(false);
-      console.log("File Uploaded Successfully");
-      router.push("/chat");
-    }, 2000);
-  };
+    for (const file of submittedFiles) {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const response = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        console.log("File Uploaded Successfully");
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+
+        const result = await response.json();
+        console.log("File uploaded successfully:", result);
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      } finally {
+        setIsProcessingFile(false);
+      }
+    }
+  }, []);
 
   return (
     <Box
