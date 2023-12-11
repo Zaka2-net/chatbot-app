@@ -1,16 +1,20 @@
 "use client";
 import React, { useCallback, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Box } from "@mui/material";
 import Dropzone from "@/components/Dropzone";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { usePdfContext } from "../contexts/PdfContext";
 
 const App = () => {
-  const [files, setFiles] = useState<File[]>([]);
+  const router = useRouter();
+
+  const { pdfFiles, setPdfFiles } = usePdfContext();
   const [isProcessingFile, setIsProcessingFile] = useState<Boolean>(false);
 
   const onSetFiles = useCallback(async (submittedFiles: File[]) => {
     setIsProcessingFile(true);
-    setFiles(submittedFiles);
+    setPdfFiles(submittedFiles);
 
     for (const file of submittedFiles) {
       const formData = new FormData();
