@@ -3,10 +3,14 @@ import React, { useCallback, useState } from "react";
 import { Box } from "@mui/material";
 import Dropzone from "@/components/Dropzone";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 const App = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [isProcessingFile, setIsProcessingFile] = useState<Boolean>(false);
+  const { user, error, isLoading } = useUser();
+
+  console.log("user", user)
 
   const onSetFiles = useCallback(async (submittedFiles: File[]) => {
     setIsProcessingFile(true);
@@ -38,6 +42,10 @@ const App = () => {
     }
   }, []);
 
+  if (!user) {
+    return <a href="/api/auth/login">Login</a>;
+  }
+
   return (
     <Box
       sx={{
@@ -47,6 +55,8 @@ const App = () => {
         height: "100vh", // Set to 100% of the viewport height
       }}
     >
+      <a href="/api/auth/logout">Logout</a>
+      
       {isProcessingFile ? (
         <LoadingSpinner />
       ) : (
