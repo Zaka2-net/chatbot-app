@@ -4,9 +4,13 @@ import { Box } from "@mui/material";
 import Dropzone from "@/components/Dropzone";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import { useRouter } from "next/navigation";
+import { usePdfContext } from "../contexts/PdfContext";
 
 const App = () => {
-  const [files, setFiles] = useState<File[]>([]);
+  const router = useRouter();
+
+  const { pdfFiles, setPdfFiles } = usePdfContext();
   const [isProcessingFile, setIsProcessingFile] = useState<Boolean>(false);
   const { user, error, isLoading } = useUser();
 
@@ -14,7 +18,7 @@ const App = () => {
 
   const onSetFiles = useCallback(async (submittedFiles: File[]) => {
     setIsProcessingFile(true);
-    setFiles(submittedFiles);
+    setPdfFiles(submittedFiles);
 
     for (const file of submittedFiles) {
       const formData = new FormData();
