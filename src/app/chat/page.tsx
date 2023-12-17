@@ -34,7 +34,7 @@ const SplitScreenLayout: React.FC = () => {
         {/* Right side */}
         <div style={{ flex: 1 }}>
           <Paper elevation={1} style={{ height: "100%", overflow: "auto" }}>
-            <PdfPreview></PdfPreview>
+            <PdfPreview />
           </Paper>
         </div>
       </div>

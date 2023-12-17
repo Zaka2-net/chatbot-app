@@ -29,7 +29,6 @@ type PDFFile = string | File | null;
 
 const PdfPreview = () => {
   const { pdfFiles, setPdfFiles } = usePdfContext();
-  console.log(pdfFiles);
 
   // Local State
   const [file, setFile] = useState<PDFFile>("./sample.pdf"); // Sample file until we pass the data between the routes

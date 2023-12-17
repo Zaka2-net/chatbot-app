@@ -4,7 +4,8 @@ import { Inter } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { PdfProvider } from "@/contexts/PdfContext";
 
-const inter = Inter({ subsets: ["latin"] });
+// TODO: Is this used?
+// const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Chatbot",
@@ -19,8 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <UserProvider>{children}</UserProvider>
-        <PdfProvider>{children} </PdfProvider>
+        <UserProvider>
+          <PdfProvider>{children}</PdfProvider>
+        </UserProvider>
         <SpeedInsights />
       </body>
     </html>

@@ -2,7 +2,7 @@ import { DocumentProcessorServiceClient } from "@google-cloud/documentai";
 import { Readable } from "stream";
 import fs from "fs";
 
-const extractTextFromDocument = async (filePath: string): Promise<string> => {
+const extractTextFromDocument = async (fileContent: Buffer): Promise<string> => {
   try {
     const projectId = "inner-analyzer-144313";
     const location = "us"; // e.g., 'us'
@@ -16,7 +16,6 @@ const extractTextFromDocument = async (filePath: string): Promise<string> => {
     );
 
     // Read the file into memory
-    const fileContent = fs.readFileSync(filePath);
     const readableStream = new Readable();
     readableStream.push(fileContent);
     readableStream.push(null);
@@ -32,8 +31,6 @@ const extractTextFromDocument = async (filePath: string): Promise<string> => {
     };
 
     const [result] = await client.processDocument(request);
-
-    console.log("full document processing result", { result });
 
     const text = result.document?.text;
 
