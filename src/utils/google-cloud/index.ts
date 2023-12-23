@@ -2,12 +2,26 @@ import { DocumentProcessorServiceClient } from "@google-cloud/documentai";
 import { Readable } from "stream";
 import fs from "fs";
 
-const extractTextFromDocument = async (fileContent: Buffer): Promise<string> => {
+const extractTextFromDocument = async (
+  fileContent: Buffer
+): Promise<string> => {
   try {
     const projectId = "inner-analyzer-144313";
     const location = "us"; // e.g., 'us'
     const processorId = "c43944c872459872";
-    const client = new DocumentProcessorServiceClient();
+
+    const encodedCredentials = process.env.GCP_CREDENTIALS;
+    if (!encodedCredentials) {
+      throw new Error("No GCP credentials found");
+    }
+
+    const decodedCredentials = JSON.parse(
+      Buffer.from(encodedCredentials, "base64").toString()
+    );
+
+    const client = new DocumentProcessorServiceClient({
+      credentials: decodedCredentials,
+    });
 
     const processorPath = client.processorPath(
       projectId,
