@@ -1,20 +1,44 @@
 "use client";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useDropzone, FileRejection } from "react-dropzone";
 import { Box, Typography } from "@mui/material";
+import LoadingSpinner from "../LoadingSpinner";
+import { usePdfContext } from "@/contexts/PdfContext";
 
-interface DropzoneProps {
-  onSetFiles: (files: File[]) => void;
-}
-
-const Dropzone: React.FC<DropzoneProps> = ({ onSetFiles }) => {
+const Dropzone: React.FC = () => {
   const maxFiles = 1;
+  const { pdfFiles, setPdfFiles } = usePdfContext();
+  const [isProcessingFile, setIsProcessingFile] = useState<Boolean>(false);
 
   const onDrop = useCallback(
-    (acceptedFiles: File[], fileRejections: FileRejection[]) => {
-      onSetFiles(acceptedFiles);
+    async (acceptedFiles: File[], fileRejections: FileRejection[]) => {
+      // TODO: handle file rejections
+      setIsProcessingFile(true);
+      setPdfFiles(acceptedFiles);
+
+      for (const file of acceptedFiles) {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        try {
+          const response = await fetch("/api/upload", {
+            method: "POST",
+            body: formData,
+          });
+
+          if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+          }
+
+          const result = await response.json();
+        } catch (error) {
+          console.error("Error uploading file:", error);
+        } finally {
+          setIsProcessingFile(false);
+        }
+      }
     },
-    []
+    [setPdfFiles, setIsProcessingFile]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -22,6 +46,10 @@ const Dropzone: React.FC<DropzoneProps> = ({ onSetFiles }) => {
     maxFiles: maxFiles,
     accept: { "application/pdf": [".pdf"] }, // Specify the accepted file type
   });
+
+  if (isProcessingFile) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <Box

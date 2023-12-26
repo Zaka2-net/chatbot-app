@@ -1,8 +1,11 @@
+import { UserProvider } from "@auth0/nextjs-auth0/client";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { PdfProvider } from "@/contexts/PdfContext";
 
-const inter = Inter({ subsets: ["latin"] });
+// TODO: Is this used?
+// const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Chatbot",
@@ -17,7 +20,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <PdfProvider>{children} </PdfProvider>
+        <UserProvider>
+          <PdfProvider>{children}</PdfProvider>
+        </UserProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
