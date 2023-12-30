@@ -1,12 +1,14 @@
 "use client";
 import React, { useCallback, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useDropzone, FileRejection } from "react-dropzone";
 import { Box, Typography } from "@mui/material";
 import LoadingSpinner from "../LoadingSpinner";
 import { usePdfContext } from "@/contexts/PdfContext";
 
 const Dropzone: React.FC = () => {
-  const maxFiles = 1;
+  const router = useRouter();
+  const maxFiles = 2;
   const { pdfFiles, setPdfFiles } = usePdfContext();
   const [isProcessingFile, setIsProcessingFile] = useState<Boolean>(false);
 
@@ -14,7 +16,13 @@ const Dropzone: React.FC = () => {
     async (acceptedFiles: File[], fileRejections: FileRejection[]) => {
       // TODO: handle file rejections
       setIsProcessingFile(true);
-      setPdfFiles(acceptedFiles);
+      const modifiedAcceptedFiles = acceptedFiles.map((file) => {
+        return {
+          pdfFile: file,
+          url: URL.createObjectURL(file),
+        };
+      });
+      setPdfFiles(modifiedAcceptedFiles);
 
       for (const file of acceptedFiles) {
         const formData = new FormData();
@@ -31,6 +39,7 @@ const Dropzone: React.FC = () => {
           }
 
           const result = await response.json();
+          router.push("/chat");
         } catch (error) {
           console.error("Error uploading file:", error);
         } finally {
