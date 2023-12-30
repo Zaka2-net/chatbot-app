@@ -18,8 +18,12 @@ const handler = async (request: NextRequest) => {
 
     const extracted_text = await extractTextFromDocument(buffer);
 
+    // TODO: store the extracted text in S3
+
     const s3_location = await uploadFileToS3(file, buffer);
 
+    // TODO: store the s3 location of the file + the s3 location of the raw text + user_id
+    
     return NextResponse.json({
       message: "File uploaded successfully",
       s3_location: s3_location,
