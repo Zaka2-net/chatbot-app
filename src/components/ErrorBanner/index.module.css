@@ -1,0 +1,11 @@
+.errorBannerContainer {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  max-width: 700px; /* Set a maximum width if needed */
+  z-index: 9999;
+  color: white;
+  text-align: center;
+}

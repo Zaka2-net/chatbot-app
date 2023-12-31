@@ -3,6 +3,8 @@ import { TextField, Button, Container, Box } from "@mui/material";
 
 interface Props {
   onSendMessage: Function;
+  setError: Function;
+  messageLimit: number;
 }
 
 interface MessageData {
@@ -11,11 +13,17 @@ interface MessageData {
   user: string;
 }
 
-const ChatInput: React.FC<Props> = ({ onSendMessage }) => {
+const ChatInput: React.FC<Props> = ({
+  onSendMessage,
+  setError,
+  messageLimit,
+}) => {
   const [message, setMessage] = useState("");
 
   const handleMessageSend = () => {
-    if (message.trim() !== "") {
+    if (message.trim().length > messageLimit) {
+      setError(`Messages can only be ${messageLimit} characters or less`);
+    } else if (message.trim() !== "") {
       const fullMessage: MessageData = {
         id: null,
         text: message,
