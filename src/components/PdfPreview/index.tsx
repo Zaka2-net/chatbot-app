@@ -25,13 +25,10 @@ const resizeObserverOptions = {};
 
 const maxWidth = 800;
 
-type PDFFile = string | File | null;
-
 const PdfPreview = () => {
   const { pdfFiles, setPdfFiles } = usePdfContext();
 
   // Local State
-  const [file, setFile] = useState<PDFFile>("./sample.pdf"); // Sample file until we pass the data between the routes
   const [numPages, setNumPages] = useState<number>();
   const [containerRef, setContainerRef] = useState<HTMLElement | null>(null);
   const [containerWidth, setContainerWidth] = useState<number>();
@@ -55,24 +52,34 @@ const PdfPreview = () => {
   return (
     <div className={styles.PDF}>
       <div className={styles.PDF__container}>
-        <div className={styles.PDF__container__document} ref={setContainerRef}>
-          <Document
-            file={file}
-            onLoadSuccess={onDocumentLoadSuccess}
-            options={options}
-            loading={<LoadingSpinner />}
-          >
-            {Array.from(new Array(numPages), (el, index) => (
-              <Page
-                key={`page_${index + 1}`}
-                pageNumber={index + 1}
-                width={
-                  containerWidth ? Math.min(containerWidth, maxWidth) : maxWidth
-                }
-              />
-            ))}
-          </Document>
-        </div>
+        {pdfFiles?.map((pdfFile, index) => {
+          return (
+            <div
+              key={index}
+              className={styles.PDF__container__document}
+              ref={setContainerRef}
+            >
+              <Document
+                file={pdfFile.url}
+                onLoadSuccess={onDocumentLoadSuccess}
+                options={options}
+                loading={<LoadingSpinner />}
+              >
+                {Array.from(new Array(numPages), (el, index) => (
+                  <Page
+                    key={`page_${index + 1}`}
+                    pageNumber={index + 1}
+                    width={
+                      containerWidth
+                        ? Math.min(containerWidth, maxWidth)
+                        : maxWidth
+                    }
+                  />
+                ))}
+              </Document>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
