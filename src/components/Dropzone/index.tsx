@@ -35,7 +35,6 @@ const Dropzone: React.FC = () => {
           const formData = new FormData();
           formData.append("file", file);
 
-
           try {
             const response = await fetch("/api/upload", {
               method: "POST",
@@ -47,19 +46,12 @@ const Dropzone: React.FC = () => {
             }
 
             const result = await response.json();
+            router.push("/chat");
           } catch (error) {
             console.error("Error uploading file:", error);
           } finally {
             setIsProcessingFile(false);
           }
-
-
-          const result = await response.json();
-          router.push("/chat");
-        } catch (error) {
-          console.error("Error uploading file:", error);
-        } finally {
-          setIsProcessingFile(false);
         }
       }
     },
