@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import ChatInput from "./ChatInput";
 import MessageList from "./MessageList";
+import ErrorBanner from "../ErrorBanner";
 
 interface MessageData {
   id: number | null; // ID is set to null, but is updated only before pushing the message into the conversation
@@ -10,9 +11,11 @@ interface MessageData {
 }
 
 const Chatbot = () => {
+  const messageLimit = 1024;
   const [conversation, setConversation] = useState<MessageData[] | []>([]);
   const [isServerLoading, setIsServerLoading] = useState<boolean>(false);
   const [messageId, setMessageId] = useState<number>(1);
+  const [error, setError] = useState<string>("");
 
   const sendUserMessageToServer = (message: string) => {
     setIsServerLoading(true);
@@ -40,11 +43,17 @@ const Chatbot = () => {
   };
   return (
     <div>
+      {error != "" && <ErrorBanner message={error}></ErrorBanner>}
+
       <MessageList
         isServerLoading={isServerLoading}
         messages={conversation}
       ></MessageList>
-      <ChatInput onSendMessage={updateConversation}></ChatInput>
+      <ChatInput
+        setError={setError}
+        messageLimit={messageLimit}
+        onSendMessage={updateConversation}
+      ></ChatInput>
     </div>
   );
 };
